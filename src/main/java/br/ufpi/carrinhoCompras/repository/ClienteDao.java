@@ -73,5 +73,10 @@ public class ClienteDao implements Serializable{
 		cliente.setSenha(senha);
 		em.merge(cliente);
 	}
+	
+	public List<Cliente> listar(){
+		TypedQuery<Cliente> query = em.createQuery("Select c from Cliente c", Cliente.class);
+		return query.getResultList();
+	}
 
 }

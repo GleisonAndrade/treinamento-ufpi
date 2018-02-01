@@ -7,10 +7,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
 import br.ufpi.carrinhoCompras.listeners.ProdutoListener;
 
 @Entity
 @EntityListeners(ProdutoListener.class)
+@Audited(targetAuditMode=RelationTargetAuditMode.NOT_AUDITED)
+@AuditTable(value = "aud_Produto")
 public class Produto {
 	
 	@Id
