@@ -18,8 +18,7 @@
 				<h:panelGrid columns="2">
 					<h:outputLabel for="desc" value="#{msg['campo.descricao']}:" />
 					<p:inputText id="desc" value="#{produtoBean.produto.descricao}"
-						required="true"
-						requiredMessage="#{msg['warning.descricao']}" />
+						required="true" requiredMessage="#{msg['warning.descricao']}" />
 
 					<p:outputLabel for="preco" value="#{msg['campo.preco']}:" />
 					<p:inputText id="preco" value="#{produtoBean.produto.preco}"
@@ -39,16 +38,42 @@
 						action="#{produtoBean.salvaProduto()}"
 						update="@form :#{p:component('table')}" />
 
-					<p:commandButton value="#{msg['botao.download']}" ajax="false" immediate="true"
-						icon="ui-icon-arrowthick-1-s">
+					<p:commandButton value="#{msg['botao.download']}" ajax="false"
+						immediate="true" icon="ui-icon-arrowthick-1-s">
 						<p:fileDownload value="#{produtoBean.downloadRelatorio()}" />
 					</p:commandButton>
 
+					<p:commandButton value="#{msg['botao.importar']}" immediate="true"
+						action="#{wBProduto.importarObras('http://www.json-generator.com/api/json/get/cqjiDOWlsO?indent=0', true)}"
+						update="@form :#{p:component('table')}" />
+
 				</h:panelGrid>
-
 			</p:panel>
+		</h:form>
 
+		<p:spacer />
+
+		<h:form>
 			<p:spacer />
+
+			<p:outputPanel id="carDetail" rendered="#{wBCorreios.renderized}">
+				<h:outputText value="Frete: " />
+				<p:inputText value="#{wBCorreios.cepDestino}" id="cepDestino"
+					required="true" requiredMessage="É necessário digitar um CEP!" />
+
+				<p:commandButton value="#{msg['botao.frete']}"
+					actionListener="#{wBCorreios.calculaPrazoEntrega()}"
+					update="carDetail" />
+
+
+				<hr />
+
+				<h:outputText value="Prazo: " />
+				<h:outputText value="#{wBCorreios.prazo}" id="prazo" />
+
+				<h:outputText value="Preço: " />
+				<h:outputText value="#{wBCorreios.preco}" id="precoF" />
+			</p:outputPanel>
 
 			<p:dataTable id="table" var="produto"
 				value="#{produtoBean.listarProdutos()}">
@@ -69,10 +94,17 @@
 						<f:convertNumber pattern="R$ #,##0.00" />
 					</h:outputText>
 				</p:column>
+
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update="@form :#{p:component('carDetail')}"
+						actionListener="#{wBCorreios.mostrarFrete()}"
+						icon="ui-icon-search" process="@this" immediate="true"
+						title="Calcular frete">
+					</p:commandButton>
+				</p:column>
 			</p:dataTable>
 
 		</h:form>
-
 	</ui:define>
 
 </ui:composition>
