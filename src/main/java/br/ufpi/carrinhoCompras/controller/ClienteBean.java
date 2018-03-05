@@ -2,6 +2,7 @@ package br.ufpi.carrinhoCompras.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -79,6 +80,7 @@ public class ClienteBean implements Serializable {
 		cliente.setCpf(cpf);
 
 		clienteDao.salvar(cliente);
+		cliente = new Cliente();
 	}
 
 	public Cliente getUsuarioLogado() {
@@ -132,6 +134,10 @@ public class ClienteBean implements Serializable {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+	
+	public List<Cliente> lista(){
+		return this.clienteDao.listar();
 	}
 
 }

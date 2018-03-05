@@ -128,4 +128,8 @@ public class WBCorreios implements Serializable {
 	public void setRenderized(boolean renderized) {
 		this.renderized = renderized;
 	}
+	
+	public void cancelaFrete() {
+		this.renderized = false;
+	}
 }

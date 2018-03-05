@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+
+	<ui:define name="centro">
+
+		<!-- <h1>#{msg['leg.cadastro.produtos']}</h1> -->
+
+		<h:form id="form">
+
+			<p:growl id="messages" showDetail="true" sticky="true" />
+
+			<p:panel id="toggleable" header="Cadastro de Clientes"
+				toggleable="true" toggleSpeed="500" closeSpeed="500"
+				widgetVar="panel" style="margin-bottom:20px">
+				<h:panelGrid columns="2">
+
+				<p:outputLabel value="#{msg['campo.email']}:" for="email" />
+				<p:inputText id="email" value="#{clienteBean.cliente.email}"
+					required="true" />
+
+
+				<p:outputLabel value="#{msg['campo.senha']}:" for="senha" />
+				<p:password id="senha" value="#{clienteBean.cliente.senha}"
+					required="true" />
+
+				<p:outputLabel value="#{msg['campo.cpf']}:" for="cpf" />
+				<p:inputMask id="cpf" mask="999.999.999-99" required="true" value="#{clienteBean.cpf}"> </p:inputMask>
+				
+				<p:commandButton value="#{msg['botao.salvar']}"
+				action="#{clienteBean.salvar()}" update="@form :#{p:component('table')}" />
+				
+			</h:panelGrid>
+			</p:panel>
+		</h:form>
+
+		<h:form>
+
+			<p:panel id="toggleable2" header="Lista de Clientes"
+				toggleable="true" toggleSpeed="500" closeSpeed="500"
+				widgetVar="panel2" style="margin-bottom:20px">
+					<h:panelGrid columns="1">
+				<p:dataTable id="table" var="cliente"
+					value="#{clienteBean.lista()}">
+
+					<p:column headerText="Email">
+						<h:outputText value="#{cliente.email}" />
+					</p:column>
+
+					<p:column headerText="CPF" style="text-align:center;">
+						<h:outputText value="#{cliente.cpf}" />
+					</p:column>
+				</p:dataTable>
+				</h:panelGrid>
+			</p:panel>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

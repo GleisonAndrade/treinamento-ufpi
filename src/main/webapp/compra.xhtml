@@ -5,72 +5,77 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
 
 	<ui:define name="centro">
+		<style>
+			table tr td{
+				vertical-align:initial;
+			}
+		</style>
 		<h:form id="form">
-			<p:growl id="messages" showDetail="true"/>
+			<p:growl id="messages" showDetail="true" />
 			<p:panelGrid columns="2">
-				<p:fieldset>
-					<p:dataGrid id="produtosDisponiveis" var="produto"
-						value="#{produtoBean.listarProdutos()}" columns="3"
-						paginator="true" rows="6"
-						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						rowsPerPageTemplate="6,12,16">
+						<p:fieldset legend="Produtos">
+							<p:dataGrid id="produtosDisponiveis" var="produto"
+								value="#{produtoBean.listarProdutos()}" columns="3"
+								paginator="true" rows="6"
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="6,12,16">
 
 
-						<p:panel id="panel" header="#{produto.id}"
-							style="text-align:center">
-							<h:panelGrid columns="1" style="width:100%">
-								<!-- 								<p:graphicImage name="demo/images/car/#{car.brand}.gif" /> -->
+								<p:panel id="panel" header="#{produto.id}"
+									style="text-align:center">
+									<h:panelGrid columns="1" style="width:100%">
+										<!-- 								<p:graphicImage name="demo/images/car/#{car.brand}.gif" /> -->
 
-								<h:outputText value="#{produto.descricao}" />
-								<h:outputText value="#{produto.preco}" />
+										<h:outputText value="#{produto.descricao}" />
+										<h:outputText value="#{produto.preco}" />
 
-							</h:panelGrid>
-						</p:panel>
+									</h:panelGrid>
+								</p:panel>
 
-						<p:draggable for="panel" revert="true" />
+								<p:draggable for="panel" revert="true" />
 
-					</p:dataGrid>
-				</p:fieldset>
+							</p:dataGrid>
+						</p:fieldset>
+						<p:fieldset id="produtosSelecionados" legend="Meu Carrinho">
 
+							<p:outputPanel id="areaSelecao">
+								<p:dataTable id="tabela" var="item" value="#{compraBean.itens}"
+									emptyMessage="Arraste produtos até aqui.">
+									<p:column headerText="#{msg['campo.descricao']}">
+										<h:outputText value="#{item.produto.descricao}" />
+									</p:column>
 
-				<p:fieldset id="produtosSelecionados">
+									<p:column headerText="#{msg['campo.preco']}">
+										<h:outputText value="#{item.produto.preco}" />
+									</p:column>
 
-					<p:outputPanel id="areaSelecao">
-						<p:dataTable id="tabela" var="item" value="#{compraBean.itens}">
-							<p:column headerText="#{msg['campo.descricao']}">
-								<h:outputText value="#{item.produto.descricao}" />
-							</p:column>
+									<p:column headerText="#{msg['campo.quantidade']}">
+										<h:inputText value="#{item.quantidade}" />
+									</p:column>
 
-							<p:column headerText="#{msg['campo.preco']}">
-								<h:outputText value="#{item.produto.preco}" />
-							</p:column>
+									<p:column headerText="">
+										<p:commandButton icon="ui-icon-trash"
+											title="#{msg['botao.remover']}"
+											action="#{compraBean.removeItem(item)}" update="tabela" />
+									</p:column>
+									<f:facet name="footer">
+										<p:commandButton value="#{msg['botao.finalizar.compra']}"
+											disabled="#{compraBean.itens.isEmpty()}"
+											action="#{compraBean.realizarCompra()}"
+											update=":#{p:component('form')}" />
+									</f:facet>
+								</p:dataTable>
+							</p:outputPanel>
+						</p:fieldset>
 
-							<p:column headerText="#{msg['campo.quantidade']}">
-								<h:inputText value="#{item.quantidade}" />
-							</p:column>
+						<p:droppable for="produtosSelecionados" tolerance="touch"
+							datasource="produtosDisponiveis"
+							activeStyleClass="ui-state-highlight">
 
-							<p:column headerText="">
-								<p:commandButton icon="ui-icon-trash" title="#{msg['botao.remover']}"
-									action="#{compraBean.removeItem(item)}" update="tabela" />
-							</p:column>
-							<f:facet name="footer">
-								<p:commandButton value="#{msg['botao.finalizar.compra']}"
-									disabled="#{compraBean.itens.isEmpty()}"
-									action="#{compraBean.realizarCompra()}"
-									update=":#{p:component('form')}" />
-							</f:facet>
-						</p:dataTable>
-					</p:outputPanel>
-				</p:fieldset>
+							<p:ajax listener="#{compraBean.selecionarProduto}"
+								update="produtosDisponiveis areaSelecao" />
 
-				<p:droppable for="produtosSelecionados" tolerance="touch"
-					datasource="produtosDisponiveis"
-					activeStyleClass="ui-state-highlight">
-
-					<p:ajax listener="#{compraBean.selecionarProduto}"
-						update="produtosDisponiveis areaSelecao" />
-
-				</p:droppable>
+						</p:droppable>
 
 			</p:panelGrid>
 		</h:form>
