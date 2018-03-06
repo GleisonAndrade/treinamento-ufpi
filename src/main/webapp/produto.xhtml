@@ -6,15 +6,15 @@
 
 	<ui:define name="centro">
 
-		<h1>#{msg['leg.cadastro.produtos']}</h1>
+		<!-- <h1>#{msg['leg.cadastro.produtos']}</h1> -->
 
 		<h:form id="form">
 
 			<p:growl id="messages" showDetail="true" sticky="true" />
 
-			<p:panel id="toggleable" header="Toggleable" toggleable="true"
-				closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel"
-				style="margin-bottom:20px">
+			<p:panel id="toggleable" header="Cadastro de Produtos"
+				toggleable="true" toggleSpeed="500" closeSpeed="500"
+				widgetVar="panel" style="margin-bottom:20px">
 				<h:panelGrid columns="2">
 					<h:outputLabel for="desc" value="#{msg['campo.descricao']}:" />
 					<p:inputText id="desc" value="#{produtoBean.produto.descricao}"
@@ -33,28 +33,21 @@
 						<f:selectItem itemLabel="#{msg['campo.tipo2']}" itemValue="tipo2" />
 						<f:selectItem itemLabel="#{msg['campo.tipo3']}" itemValue="tipo3" />
 					</p:selectOneMenu>
+					<p:commandButton value="#{msg['botao.importar']}" immediate="true"
+						action="#{wBProduto.importarObras('http://www.json-generator.com/api/json/get/cqjiDOWlsO?indent=0', true)}"
+						update="@form :#{p:component('table')}" />
 
 					<p:commandButton value="#{msg['botao.salvar']}"
 						action="#{produtoBean.salvaProduto()}"
 						update="@form :#{p:component('table')}" />
 
-					<p:commandButton value="#{msg['botao.download']}" ajax="false"
-						immediate="true" icon="ui-icon-arrowthick-1-s">
-						<p:fileDownload value="#{produtoBean.downloadRelatorio()}" />
-					</p:commandButton>
-
-					<p:commandButton value="#{msg['botao.importar']}" immediate="true"
-						action="#{wBProduto.importarObras('http://www.json-generator.com/api/json/get/cqjiDOWlsO?indent=0', true)}"
-						update="@form :#{p:component('table')}" />
 
 				</h:panelGrid>
 			</p:panel>
 		</h:form>
 
-		<p:spacer />
 
 		<h:form>
-			<p:spacer />
 
 			<p:outputPanel id="carDetail" rendered="#{wBCorreios.renderized}">
 				<h:outputText value="Frete: " />
@@ -63,6 +56,10 @@
 
 				<p:commandButton value="#{msg['botao.frete']}"
 					actionListener="#{wBCorreios.calculaPrazoEntrega()}"
+					update="carDetail" />
+					
+				<p:commandButton value="Cancelar"
+					actionListener="#{wBCorreios.cancelaFrete()}"
 					update="carDetail" />
 
 
@@ -75,34 +72,41 @@
 				<h:outputText value="#{wBCorreios.preco}" id="precoF" />
 			</p:outputPanel>
 
-			<p:dataTable id="table" var="produto"
-				value="#{produtoBean.listarProdutos()}">
-				<p:column headerText="#{msg['campo.id']}">
-					<h:outputText value="#{produto.id}" />
-				</p:column>
-
-				<p:column headerText="#{msg['campo.descricao']}">
-					<h:outputText value="#{produto.descricao}" />
-				</p:column>
-
-				<p:column headerText="#{msg['campo.tipo']}">
-					<h:outputText value="#{produto.tipo}" />
-				</p:column>
-
-				<p:column headerText="#{msg['campo.preco']}">
-					<h:outputText value="#{produto.preco}">
-						<f:convertNumber pattern="R$ #,##0.00" />
-					</h:outputText>
-				</p:column>
-
-				<p:column style="width:32px;text-align: center">
-					<p:commandButton update="@form :#{p:component('carDetail')}"
-						actionListener="#{wBCorreios.mostrarFrete()}"
-						icon="ui-icon-search" process="@this" immediate="true"
-						title="Calcular frete">
+			<p:panel id="toggleable2" header="Lista de Produtos"
+				toggleable="true" toggleSpeed="500" closeSpeed="500"
+				widgetVar="panel2" style="margin-bottom:20px">
+					<h:panelGrid columns="1">
+					<p:commandButton value="Relatório" ajax="false" style="float:right;"
+						immediate="true" icon="ui-icon-arrowthick-1-s">
+						<p:fileDownload value="#{produtoBean.downloadRelatorio()}" />
 					</p:commandButton>
-				</p:column>
-			</p:dataTable>
+				<p:dataTable id="table" var="produto"
+					value="#{produtoBean.listarProdutos()}">
+
+					<p:column headerText="#{msg['campo.descricao']}">
+						<h:outputText value="#{produto.descricao}" />
+					</p:column>
+
+					<p:column headerText="#{msg['campo.tipo']}" style="text-align:center;">
+						<h:outputText value="#{produto.tipo}" />
+					</p:column>
+
+					<p:column headerText="#{msg['campo.preco']}">
+						<h:outputText value="#{produto.preco}">
+							<f:convertNumber pattern="R$ #,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column style="width:32px;text-align: center">
+						<p:commandButton update="@form :#{p:component('carDetail')}"
+							actionListener="#{wBCorreios.mostrarFrete()}"
+							icon="ui-icon-search" process="@this" immediate="true"
+							title="Calcular frete">
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+				</h:panelGrid>
+			</p:panel>
 
 		</h:form>
 	</ui:define>

@@ -25,7 +25,7 @@
 
 
 
-<h:body>
+<h:body style="background:#c2c2c2">
 	<p:layout fullPage="true">
 
 		<p:layoutUnit position="north" size="65">
@@ -33,7 +33,7 @@
 			<h:form>
 				<p:menubar>
 					<p:menuitem value="Produtos" url="produto.xhtml" />
-					<p:menuitem value="Clientes" url="cliente.xhtml" />
+					<p:menuitem value="Clientes" url="cliente2.xhtml" />
 					<p:menuitem value="Compras" url="compra.xhtml" />
 
 					<p:submenu label="#{clienteBean.usuarioLogado.email}" style=" float: right;" icon="ui-icon-person">
@@ -51,8 +51,8 @@
         	</ui:insert>
 		</p:layoutUnit>
 
-		<p:layoutUnit position="south" size="100">
-			<h:outputText value="South unit content." />
+		<p:layoutUnit position="south" size="70" style="text-align:center;">
+			<h:outputText value="© 2018 Carrinho de Compras" />
 		</p:layoutUnit>
 
 
