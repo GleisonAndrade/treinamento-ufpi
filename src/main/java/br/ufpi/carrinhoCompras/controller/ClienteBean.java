@@ -52,7 +52,7 @@ public class ClienteBean implements Serializable {
 		
 		c.setCpf("00000000000");
 		c.setNome("Gleison Andrade");
-		c.setEmail("gleisondeandradeesilva@gmail.com");
+		c.setEmail("gleison@gmail.com");
 		c.setSenha("123456");
 		
 		clienteDao.salvar(c);
@@ -85,6 +85,11 @@ public class ClienteBean implements Serializable {
 
 		clienteDao.salvar(cliente);
 		cliente = new Cliente();
+		FacesContext
+		.getCurrentInstance()
+		.addMessage(null, 
+			new FacesMessage("Sucesso!", 
+					"Cliente salvo com sucesso!"));
 	}
 
 	public Cliente getUsuarioLogado() {

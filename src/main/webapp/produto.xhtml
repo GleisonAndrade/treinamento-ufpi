@@ -29,17 +29,17 @@
 					<p:selectOneMenu id="tipo" value="#{produtoBean.produto.tipo}"
 						style="width:125px" required="true">
 						<f:selectItem itemLabel="#{msg['campo.sel.tipo']}" itemValue="" />
-						<f:selectItem itemLabel="#{msg['campo.tipo1']}" itemValue="tipo1" />
-						<f:selectItem itemLabel="#{msg['campo.tipo2']}" itemValue="tipo2" />
-						<f:selectItem itemLabel="#{msg['campo.tipo3']}" itemValue="tipo3" />
+						<f:selectItem itemLabel="#{msg['campo.tipo1']}" itemValue="#{msg['campo.tipo1']}" />
+						<f:selectItem itemLabel="#{msg['campo.tipo2']}" itemValue="#{msg['campo.tipo2']}" />
+						<f:selectItem itemLabel="#{msg['campo.tipo3']}" itemValue="#{msg['campo.tipo3']}" />
 					</p:selectOneMenu>
 					<p:commandButton value="#{msg['botao.importar']}" immediate="true"
 						action="#{wBProduto.importarObras('http://www.json-generator.com/api/json/get/cqjiDOWlsO?indent=0', true)}"
 						update="@form :#{p:component('table')}" />
 
 					<p:commandButton value="#{msg['botao.salvar']}"
-						action="#{produtoBean.salvaProduto()}"
-						update="@form :#{p:component('table')}" />
+						actionListener="#{produtoBean.salvaProduto()}" ajax="true"
+						update="@form :#{p:component('table')} :#{p:component('messages')}" />
 
 
 				</h:panelGrid>
@@ -49,7 +49,7 @@
 
 		<h:form>
 
-			<p:outputPanel id="carDetail" rendered="#{wBCorreios.renderized}">
+			<!-- <p:outputPanel id="carDetail" rendered="#{wBCorreios.renderized}">
 				<h:outputText value="Frete: " />
 				<p:inputText value="#{wBCorreios.cepDestino}" id="cepDestino"
 					required="true" requiredMessage="É necessário digitar um CEP!" />
@@ -70,7 +70,7 @@
 
 				<h:outputText value="Preço: " />
 				<h:outputText value="#{wBCorreios.preco}" id="precoF" />
-			</p:outputPanel>
+			</p:outputPanel> -->
 
 			<p:panel id="toggleable2" header="Lista de Produtos"
 				toggleable="true" toggleSpeed="500" closeSpeed="500"
@@ -96,14 +96,20 @@
 							<f:convertNumber pattern="R$ #,##0.00" />
 						</h:outputText>
 					</p:column>
+					<p:column>
+						<p:commandButton actionListener="#{produtoBean.editar(produto)}" 
+						value="Editar" update="@form :#{p:component('form')}"  ajax="true">
+						
+						</p:commandButton>
+					</p:column>
 
-					<p:column style="width:32px;text-align: center">
+					<!-- <p:column style="width:32px;text-align: center">
 						<p:commandButton update="@form :#{p:component('carDetail')}"
 							actionListener="#{wBCorreios.mostrarFrete()}"
 							icon="ui-icon-search" process="@this" immediate="true"
 							title="Calcular frete">
 						</p:commandButton>
-					</p:column>
+					</p:column> -->
 				</p:dataTable>
 				</h:panelGrid>
 			</p:panel>
