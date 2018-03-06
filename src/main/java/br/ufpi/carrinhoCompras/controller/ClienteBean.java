@@ -15,6 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import br.ufpi.carrinhoCompras.model.Cliente;
 import br.ufpi.carrinhoCompras.repository.ClienteDao;
 
+/**
+ * @author gleison
+ *
+ */
 @Named
 @SessionScoped
 public class ClienteBean implements Serializable {
