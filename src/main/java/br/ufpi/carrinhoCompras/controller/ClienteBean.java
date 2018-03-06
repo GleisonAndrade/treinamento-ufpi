@@ -17,7 +17,7 @@ import br.ufpi.carrinhoCompras.model.Cliente;
 import br.ufpi.carrinhoCompras.repository.ClienteDao;
 
 /**
- * @author gleison
+ * @author renato
  *
  */
 @Named
