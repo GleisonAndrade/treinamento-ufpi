@@ -58,7 +58,7 @@ public class CompraBean implements Serializable{
 		compraDao.salvar(compra);
 		itens = new ArrayList<ItemCompra>();
 		produtoSelecionado = null;
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Compra Finalizada!", "Parabéns, sua compra foi realizada com sucesso!"));
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Compra Finalizada!", "ParabÃ©ns, sua compra foi realizada com sucesso!"));
 	}
 	
 	public void adicionarNoCarrinho(Produto produto){

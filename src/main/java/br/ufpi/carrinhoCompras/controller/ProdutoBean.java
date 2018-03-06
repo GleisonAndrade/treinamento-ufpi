@@ -6,12 +6,12 @@ package br.ufpi.carrinhoCompras.controller;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -19,6 +19,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 import br.ufpi.carrinhoCompras.model.Produto;
+import javax.enterprise.context.SessionScoped;
 import br.ufpi.carrinhoCompras.repository.ProdutoDao;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -33,8 +34,10 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
  *
  */
 @Named
-@RequestScoped
-public class ProdutoBean {
+@SessionScoped
+public class ProdutoBean  implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Inject
 	private ProdutoDao produtoDao;
@@ -52,6 +55,7 @@ public class ProdutoBean {
 	public void salvaProduto() {
 		produtoDao.salvar(produto);
 		produto = new Produto();
+		
 	}
 
 	public List<Produto> listarProdutos() {
@@ -104,6 +108,11 @@ public class ProdutoBean {
 			return null;
 		}
 		
+	}
+	
+	public void editar(Produto produto) {
+		this.produto = new Produto();
+		this.produto = produto;
 	}
 
 	
